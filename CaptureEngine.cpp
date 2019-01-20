@@ -7,7 +7,9 @@
 CaptureEngine::CaptureEngine()
 {
 	//printf("Make CaptureEngine\n");
-	dev = (char *)"mon0";
+	dev = (char *)malloc(50);
+	printf("Type network interface : ");
+	scanf("%s",dev);
 	printf("\tDevice : %s\n", dev);
 	handle = pcap_open_live(dev, BUFSIZ, 1, 0 , errorbuf);
 }

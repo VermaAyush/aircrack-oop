@@ -7,7 +7,7 @@
 #include "SortEngine.h"
 #include "OutputEngine.h"
 
-
+#include <thread>
 
 int main()
 {
@@ -21,14 +21,15 @@ int main()
 	
 	OutputEngine * OE = new OutputEngine(pktList);
 	
-	
+	std::thread t(&OutputEngine::process, OE);
+
 	while(1)
 	{		
 		RawData * rawdata = CE->capture();
 
 		AE->analyze(rawdata,SE);
 		
-		OE->printScreen();
+		//OE->printScreen();
 		
 	}
 

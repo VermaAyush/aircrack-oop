@@ -13,6 +13,6 @@ class OutputEngine
 		OutputEngine(PacketList * pktList);
 		~OutputEngine();
 		//Output 함수
-
+		void process();
 		void printScreen();
 };

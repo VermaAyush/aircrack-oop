@@ -28,3 +28,11 @@ void OutputEngine::printScreen(){
 	//if( pktList->BeaconList.size() > 0 )
 	//pktList->BeaconList.back().printAttr();
 }
+
+void OutputEngine::process(){
+	while(1){
+		printScreen();
+		sleep(1);
+	}
+	
+}

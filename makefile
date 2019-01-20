@@ -9,7 +9,7 @@ all : dot11
 
 
 dot11 : $(CSOURCEFILES)
-	$(GPP) -o $@ $^ -lpcap
+	$(GPP) -o $@ $^ -lpcap -pthread
 
 clean:
 	rm -f *.o

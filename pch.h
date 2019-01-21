@@ -8,6 +8,7 @@
 #include <vector>
 #include <list>
 #include <algorithm>
+#include <thread>
 
 #include "ieee80211.h"
 

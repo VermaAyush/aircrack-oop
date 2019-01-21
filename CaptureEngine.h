@@ -4,6 +4,7 @@
 #include "RawData.h"
 
 #include <pcap.h>
+#include <thread>
 
 class CaptureEngine{
 	private:
@@ -11,12 +12,16 @@ class CaptureEngine{
 		char * dev;
 		bpf_u_int32 netp;
 		char errorbuf[PCAP_ERRBUF_SIZE];
+
+		
+
 		
 	public:
 		CaptureEngine();
 		~CaptureEngine();
 		
-		RawData * capture(); 	
+		RawData * capture();
+		void changeChannel(); 	
 };
 
 

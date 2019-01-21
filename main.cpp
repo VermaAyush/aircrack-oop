@@ -21,6 +21,8 @@ int main()
 	
 	OutputEngine * OE = new OutputEngine(pktList);
 	
+	std::thread channel(&CaptureEngine::changeChannel,CE);
+
 	std::thread t(&OutputEngine::process, OE);
 
 	while(1)

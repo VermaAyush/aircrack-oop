@@ -15,4 +15,5 @@ class OutputEngine
 		//Output 함수
 		void process();
 		void printScreen();
+		void printChannel();
 };

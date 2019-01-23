@@ -37,6 +37,9 @@ void BeaconPacket::analyze(){
     memset(ESSID,0,33);
     memcpy(ESSID,bodyPtr+2,*(bodyPtr+1));
     //printf("ESSID : %s\n",ESSID);
+
+    bodyPtr = (u_int8_t * )beaconHdr+12 +*(bodyPtr+1)+2;
+    bodyLen -= *(bodyPtr+1)+2;
     while(nextfield()){
         //printf("ID : %u , size : %u\n", fieldHdrPtr->ID, fieldHdrPtr->size);
         
@@ -71,6 +74,10 @@ void BeaconPacket::analyze(){
                     //printf("\t\tPSK\n");
                     memcpy(AUTH,"PSK",5);
                 }
+                else if(*(tmpPtr+2+i*4+3)==1){
+                    //printf("\t\tPSK\n");
+                    memcpy(AUTH,"MGT",5);
+                }
                 else{
                     //printf("\t\tPSK\n");
                     memcpy(AUTH,"IDK",5);
@@ -78,16 +85,40 @@ void BeaconPacket::analyze(){
             
             }
             //printf("AUTH %s\n",AUTH);
-            //printf("----------------------------------packet\n");
+            
         }
         
-       /*
+
        if(fieldHdrPtr->ID == 221){
-           printf("vendor specific \n");
+           //printf("vendor specific \n");
+           //printf("size of field : %d\n", fieldHdrPtr->size);
+           //혹시나 모르는 오류를 위해
+           if(fieldHdrPtr->size >= 100 ) break;
+           
+           //printf("OUI : %02X %02X %02X, type : %02X\n",*(bodyPtr+2),*(bodyPtr+3),*(bodyPtr+4),*(bodyPtr+5));
+           //printf("Vendor specific type : %02X\n", *(bodyPtr+5)); 
+           //printHex(bodyPtr+5, fieldHdrPtr->size-3);
+           u_int8_t microsoftOUI[3] = {0x00, 0x50, 0xf2};
+           if(memcmp(bodyPtr+2, microsoftOUI,3) == 0){
+               
+               //printf("microsoft oui\n");
+               //printf("Vendor specific type : %02X\n", *(bodyPtr+5));
+               if(*(bodyPtr+5) == 4){
+                   //printf("WPA2\n");
+                   memcpy(encrypt, "WPA2",5);
+               }
+               else if(*(bodyPtr+5) == 1){
+                   //printf("WPA version : %02X\n", *(bodyPtr+6));
+                   memcpy(encrypt, "WPA",5);
+               }
+           }
+           
+
        }
-       */
-        if(fieldHdrPtr->ID == 0) break;
+       
+        //if(fieldHdrPtr->ID == 0) break;
     }
+    //printf("----------------------------------packet\n");
     /* etc */
     //printf("len : %04lX\n",bodyLen);
     //printHex((u_int8_t *)bodyPtr,bodyLen);
@@ -118,7 +149,7 @@ int BeaconPacket::nextfield(){
     만약 현재 해더가 221이면 return 0;
     */
     fieldHdrPtr = (struct FIELD_HEADER *)bodyPtr;
-    if(fieldHdrPtr->ID == 221) return 0;
+    if(fieldHdrPtr->ID == 0) return 0;
     bodyPtr += fieldHdrPtr->size+2;
     fieldHdrPtr = (FIELD_HEADER *)(bodyPtr);
     return 1;

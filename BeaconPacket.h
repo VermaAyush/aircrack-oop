@@ -37,12 +37,10 @@ class BeaconPacket : public WlanPacket
         int pwr;
         int Beacons;
         int data;
-        //int Channel; --> goto radiotap header
         int MB;
         char encrypt[5];
         char CIPHER[5];
         char AUTH[5];
         char ESSID[33];
        
-        //void printAttr();
 };

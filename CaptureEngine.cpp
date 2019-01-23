@@ -4,8 +4,9 @@
 
 #include <pcap.h>
 
-CaptureEngine::CaptureEngine()
+CaptureEngine::CaptureEngine(PacketList * tmpPktList)
 {
+	pktList = tmpPktList;
 	//printf("Make CaptureEngine\n");
 	dev = (char *)malloc(50);
 	printf("Type network interface : ");
@@ -45,7 +46,7 @@ void CaptureEngine::changeChannel(){
 			count%=50;
 			channel++;
 			channel%=14;
-			char channels[17][3] = {"1", "7","13","2","8", "3","14","9", "4", "10","5","11","6","12"};
+			char channels[17][3] = {" 1", " 7","13"," 2"," 8", " 3","14"," 9", " 4", "10"," 5","11"," 6","12"};
 			char commandBase[30] = "iwconfig ";
 			strcat(commandBase, dev);
 			strcat(commandBase, " channel ");
@@ -54,6 +55,7 @@ void CaptureEngine::changeChannel(){
 			strcat(commandRst, channels[channel]);
 			//printf("command : %s\n", commandRst);
 			system(commandRst);
+			memcpy(pktList->channel,channels[channel],3);
 		}
 	}
 	

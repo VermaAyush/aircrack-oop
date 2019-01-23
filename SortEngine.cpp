@@ -32,7 +32,7 @@ void SortEngine::pushPkt(BeaconPacket * pkt){
  	int cmplen;
 	//printf("현재 개수 : %lu\n",pktList->BeaconList.size());
 	for (iter = pktList->BeaconList.begin(); iter != pktList->BeaconList.end(); ++iter){
-		if(iter->beaconHdr->length == pkt->beaconHdr->length) if(!memcmp(iter->ESSID,pkt->ESSID,pkt->beaconHdr->length))
+		if(iter->beaconHdr->length == pkt->beaconHdr->length) if(!memcmp(iter->BSSID,pkt->BSSID,6))
 		{
 			//return;
 			//printf("---------------------------------------same!!!!!!\n");

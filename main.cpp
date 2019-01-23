@@ -13,7 +13,7 @@ int main()
 {
 	PacketList * pktList = new PacketList();
 
-	CaptureEngine  * CE = new CaptureEngine();
+	CaptureEngine  * CE = new CaptureEngine(pktList);
 	
 	AnalyzeEngine  * AE = new AnalyzeEngine();
 
@@ -24,7 +24,7 @@ int main()
 	std::thread channel(&CaptureEngine::changeChannel,CE);
 
 	std::thread t(&OutputEngine::process, OE);
-
+	std::thread printChannel(&OutputEngine::printChannel,OE);
 	while(1)
 	{		
 		RawData * rawdata = CE->capture();
